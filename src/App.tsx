@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Shuffle, Heart } from 'lucide-react';
+import { Shuffle, Heart, Download } from 'lucide-react';
 
 interface DogImage {
   url: string;
@@ -13,6 +13,62 @@ function App() {
   const [selectedCells, setSelectedCells] = useState<Set<number>>(new Set());
   const [isShuffling, setIsShuffling] = useState(false);
 
+  const handleExport = useCallback(async () => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const gridSize = 3;
+    const cellSize = 200;
+    const gap = 8;
+    const canvasSize = gridSize * cellSize + (gridSize - 1) * gap;
+    
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+    
+    // Fill background
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+    const imagePromises = images.map((image, index) => {
+      return new Promise<void>((resolve) => {
+        if (!image.url) {
+          resolve();
+          return;
+        }
+        
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const row = Math.floor(index / gridSize);
+          const col = index % gridSize;
+          const x = col * (cellSize + gap);
+          const y = row * (cellSize + gap);
+          
+          ctx.drawImage(img, x, y, cellSize, cellSize);
+          resolve();
+        };
+        img.onerror = () => resolve();
+        img.src = image.url;
+      });
+    });
+
+    await Promise.all(imagePromises);
+    
+    // Download the image
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'dog-grid.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    });
+  }, [images]);
   const fetchRandomDogImage = async (): Promise<string> => {
     try {
       const response = await fetch('https://dog.ceo/api/breeds/image/random');
@@ -130,12 +186,12 @@ function App() {
           ))}
         </div>
 
-        <div className="text-center">
+        <div className="flex justify-center gap-3">
           <button
             onClick={handleShuffle}
             disabled={isShuffling}
             className={`
-              inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm
+              flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm
               transform transition-all duration-300 ease-out
               ${isShuffling
                 ? 'bg-gray-400 cursor-not-allowed'
@@ -146,6 +202,20 @@ function App() {
           >
             <Shuffle className={`h-4 w-4 ${isShuffling ? 'animate-spin' : ''}`} />
             {isShuffling ? 'Shuffling...' : 'Shuffle'}
+          </button>
+          
+          <button
+            onClick={handleExport}
+            className="
+              flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm
+              transform transition-all duration-300 ease-out
+              bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 
+              hover:scale-102 hover:shadow-md active:scale-95
+              text-white shadow-sm
+            "
+          >
+            <Download className="h-4 w-4" />
+            Export
           </button>
 
           {selectedCells.size > 0 && (
