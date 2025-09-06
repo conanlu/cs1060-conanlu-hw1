@@ -145,7 +145,7 @@ function App() {
             `}
           >
             <Shuffle className={`h-4 w-4 ${isShuffling ? 'animate-spin' : ''}`} />
-            {isShuffling ? 'Shuffling...' : 'Shuffle New Dogs'}
+            {isShuffling ? 'Shuffling...' : 'Shuffle'}
           </button>
 
           {selectedCells.size > 0 && (
