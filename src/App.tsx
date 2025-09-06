@@ -80,28 +80,28 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-6 px-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-3">
-            <Heart className="h-7 w-7 text-red-500" />
+      <div className="max-w-lg mx-auto">
+        <div className="text-center mb-4">
+          <h1 className="text-2xl font-bold text-gray-900 mb-1 flex items-center justify-center gap-2">
+            <Heart className="h-5 w-5 text-red-500" />
             Dog Gallery
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm">
             Click on images to save them, then shuffle to discover new favorites!
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-3 gap-2 mb-4">
           {images.map((image, index) => (
             <div
               key={index}
               className={`
-                relative aspect-square rounded-xl overflow-hidden cursor-pointer
+                relative aspect-square rounded-lg overflow-hidden cursor-pointer
                 transform transition-all duration-300 ease-out
-                hover:scale-105 hover:shadow-lg
+                hover:scale-102 hover:shadow-md
                 ${selectedCells.has(index) 
-                  ? 'ring-4 ring-blue-400 shadow-2xl shadow-blue-400/30 scale-105' 
-                  : 'shadow-md hover:shadow-xl'
+                  ? 'ring-2 ring-blue-400 shadow-lg shadow-blue-400/30 scale-102' 
+                  : 'shadow-sm hover:shadow-md'
                 }
                 ${image.loading || isShuffling ? 'animate-pulse' : ''}
               `}
@@ -109,7 +109,7 @@ function App() {
             >
               {image.loading || isShuffling ? (
                 <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <div className="w-6 h-6 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                 </div>
               ) : (
                 <img
@@ -120,8 +120,8 @@ function App() {
               )}
               
               {selectedCells.has(index) && (
-                <div className="absolute top-1.5 right-1.5 bg-blue-500 text-white rounded-full p-1.5 shadow-lg animate-pulse">
-                  <Heart className="h-3 w-3 fill-current" />
+                <div className="absolute top-1 right-1 bg-blue-500 text-white rounded-full p-1 shadow-md animate-pulse">
+                  <Heart className="h-2.5 w-2.5 fill-current" />
                 </div>
               )}
 
@@ -135,21 +135,21 @@ function App() {
             onClick={handleShuffle}
             disabled={isShuffling}
             className={`
-              inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold
+              inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm
               transform transition-all duration-300 ease-out
               ${isShuffling
                 ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:scale-105 hover:shadow-lg active:scale-95'
+                : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:scale-102 hover:shadow-md active:scale-95'
               }
-              text-white shadow-lg
+              text-white shadow-sm
             `}
           >
-            <Shuffle className={`h-5 w-5 ${isShuffling ? 'animate-spin' : ''}`} />
+            <Shuffle className={`h-4 w-4 ${isShuffling ? 'animate-spin' : ''}`} />
             {isShuffling ? 'Shuffling...' : 'Shuffle New Dogs'}
           </button>
 
           {selectedCells.size > 0 && (
-            <p className="mt-3 text-gray-600 text-sm">
+            <p className="mt-2 text-gray-600 text-xs">
               {selectedCells.size} image{selectedCells.size === 1 ? '' : 's'} saved from shuffle
             </p>
           )}
