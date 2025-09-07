@@ -218,12 +218,15 @@ function App() {
             Export
           </button>
 
-          {selectedCells.size > 0 && (
-            <p className="mt-2 text-gray-600 text-xs">
+        </div>
+
+        {selectedCells.size > 0 && (
+          <div className="text-center mt-2">
+            <p className="text-gray-600 text-xs">
               {selectedCells.size} image{selectedCells.size === 1 ? '' : 's'} saved from shuffle
             </p>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
