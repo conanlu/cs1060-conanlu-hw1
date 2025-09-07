@@ -4,7 +4,7 @@ Conan Lu
 github: conanlu  
 netlify deployment: https://stirring-queijadas-280559.netlify.app/  
 github repo: https://github.com/conanlu/cs1060-conanlu-hw1/  
-bolt url: https://bolt.new/~/sb1-qw2uymrr
+bolt url: https://bolt.new/~/sb1-qw2uymrr  
 bolt deployment: https://dog-image-grid-with-bd33.bolt.host   
 
 I created Dog Gallery, a service that allows users to curate a grid of dog images from random. Each shuffle gives you nine random dogs; click on the images to save them. When you're satisfied, you can export the grid to png.
